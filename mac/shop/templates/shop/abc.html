@@ -1,0 +1,40 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+{% block title%} My Awesome Cart Tracker{% endblock %}
+{% block body %}
+<div class="container">
+    {{response}}
+    <div class="col my-4">
+
+        <h2>Payment status regarding your order Id {{response.ORDERID}}</h2>
+        {% if response.RESPCODE == '01' %}
+        ORDER SUCCESS
+        {% else %}
+        ORDER FAILURE
+        {% endif%}
+
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-12">
+        <br><br> <h2 style="color:#0fad00">Thank You</h2>
+        <img src="{% static '/shop/done.png' %}" style="width: 200px;">
+        <p style="font-size:20px;color:#5C5C5C;">Your payment was successful. Your Transaction Id : <b>Hr3Dseq420J</b><br>We have been received yor order. Thank you for choosing MyawesomeCart. </p>
+    <br><br>
+        </div>
+
+        <div class="col-sm-12">
+        <br><br> <h2 style="color:#f34200">Payment Failure</h2>
+        <img src="{% static '/shop/not-done.png' %}" style="width: 200px;">
+        <p style="font-size:20px;color:#5C5C5C;">Your payment was not successful. There have some problem. If there have any deduction from your bank account it will be refund within 24 hrs. Thank you for choosing MyawesomeCart.</p>
+    <br><br>
+        </div>
+
+</div>
+{% endblock %}
+{% block js %}
+<script>
+{% if response.RESPCODE == '01' %}
+	localStorage.clear();
+{% endif%}
+</script>
+{% endblock %}

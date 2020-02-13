@@ -1,0 +1,242 @@
+{% extends 'shop/basic.html' %}
+{% block title%} Checkout - My Awesome Cart{% endblock %}
+{% block body %}
+<div class="container">
+    <h2>Step 1 - My Awesome Cart Express Checkout - Review Your Cart Items</h2>
+    <div class="offset-sm-2 col-sm-7 my-4">
+        
+        <div class="my-4">
+            <ul class="list-group" id="items">
+            </ul>
+        </div>
+        <table class="table" id="productItemTable">
+  
+</table>
+    </div>
+
+{% if product_qty_error %}
+	{% for error in product_qty_error %}
+		<div class="alert alert-danger"><b>{{ error }}</b></div>
+	{% endfor %}
+{% endif %}
+
+
+
+    <div class="col my-4">
+        <h2>Step 2 - Enter Address & Other Details:</h2>
+        <form method="post" action="/shop/checkout/">{% csrf_token %}
+            <input type="hidden" name="itemsJson" id="itemsJson">
+            <input type="hidden" name="amount" id="amount">
+            {% if not thank and error.item_error %}
+                    <div class="alert alert-danger">{{ error.item_error }}</div>
+                    {% endif %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputname">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                    {% if not thank and error.name_error %}
+                    <div class="alert alert-danger">{{ error.name_error }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    {% if not thank and error.email_error %}
+                    <div class="alert alert-danger">{{ error.email_error }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="address1" name="address1" placeholder="1234 Main St">
+                {% if not thank and error.address_error %}
+                    <div class="alert alert-danger">{{ error.address_error }}</div>
+                    {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Address line 2</label>
+                <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment, studio, or floor">
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" id="city" name="city">
+                    {% if not thank and error.city_error %}
+                    <div class="alert alert-danger">{{ error.city_error }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputState">State</label>
+                    <input type="text" class="form-control" id="state" name="state"  placeholder="Enter State">
+                    {% if not thank and error.state_error %}
+                    <div class="alert alert-danger">{{ error.state_error }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="text" class="form-control" id="zip_code" name="zip_code">
+                    {% if not thank and error.zip_error %}
+                    <div class="alert alert-danger">{{ error.zip_error }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputZip">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone">
+                {% if not thank and error.phone_error %}
+                    <div class="alert alert-danger">{{ error.phone_error }}</div>
+                    {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    updatePopover(cart);
+}
+// console.log(cart);
+var sum = 0;
+if ($.isEmptyObject(cart)) {
+    //if object is empty
+    $('#itemsJson').val();
+    mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
+    $('#items').append(mystr);
+} else {
+    for (item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        sum = sum + qty;
+        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${name}
+                    <span class="badge badge-primary badge-pill">${qty}</span>
+                </li>`
+        //$('#items').append(mystr);
+    }
+    $('#itemsJson').val(JSON.stringify(cart));
+}
+document.getElementById('cart').innerHTML = sum;
+
+function updatePopover(cart)
+{
+    
+    var popStr = "";
+    popStr = popStr + "<h5> Cart for your items in my shopping cart </h5><div class='mx-2 my-2'>";
+    var i = 1;
+    for (var item in cart){
+        popStr = popStr + "<b>" + i + "</b>. ";
+       
+        popStr = popStr + cart[item][1].slice(0, 19) + "... Qty: " + cart[item][0] + '<br>';
+        i = i+1;
+    }
+    popStr = popStr + "</div>" 
+    popStr = popStr + "<a href='/shop/checkout'><button class='btn btn-primary' id ='checkout'>Checkout</button></a> <button class='btn btn-primary' onclick='clearCart()' id ='clearCart'>Clear Cart</button>     "
+    document.getElementById('popcart').setAttribute('data-content', popStr);
+    $('#popcart').popover('show');
+}
+{% if thank %}
+alert('Thanks for ordering with us. Your order is is {{id}}. Use it to track your order using our order tracker');
+localStorage.clear();
+document.location = "/shop";
+{% endif %}
+
+
+/*   My custom js showing product in table  */
+
+if ($.isEmptyObject(cart)) {
+    //if object is empty
+    $('#itemsJson').val();
+    
+} else {
+    total = 0 ;
+    i = 1 ;
+    tableStr = `<thead>
+    <tr>
+    <th scope="col">#</th>
+    <th scope="col">Product</th>
+    <th scope="col">Qty</th>
+    <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>`
+
+    for (item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let price = cart[item][2];
+        total = total + (price * qty);
+        tableStr += `<tr>
+      <th scope="row">${i}</th>
+      <td>${name}</td>
+      <td><button id='minus${item}' class='btn btn-primary minus'>-</button> <span id='val${item}'>${qty}</span> <button id='plus${item}' class='btn btn-primary plus'>+</button></td>
+      <td>₹ <span id='price${item}'>${price * qty}</span> </td>
+    </tr>` ;
+        i++ ;
+    }
+
+    tableStr += `<tr><td></td><td></td><td><b>Total</b></td><td><b>₹<span id='pricetotal'>${total}</span></b></td></tr></tbody>` ;
+    //console.log(tableStr);
+    $('#productItemTable').html(tableStr);
+    $('#itemsJson').val(JSON.stringify(cart));
+    $('#amount').val(total);
+    
+    
+function updateCart(cart) {
+  var sum = 0 ;
+    for (var item in cart) {
+      sum += cart[item][0] ;
+        
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    // document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    document.getElementById('cart').innerHTML = sum;
+    $('#itemsJson').val(JSON.stringify(cart));
+    console.log(cart);
+    updatePopover(cart);
+}
+
+
+    // IF Plus or Minus Button is clicked Change Cart
+$(document).on('click','button.minus', function(){
+  a = this.id.slice(7, );
+  cart['pr' + a][0] = cart['pr' + a][0] - 1;
+  cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+  total = total - cart['pr' + a][2]
+  //$price = parseInt($('#pricepr'+a).text())
+  $price = cart['pr' + a][0] * cart['pr' + a][2]
+  
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+    document.getElementById('pricepr' + a).innerHTML = $price;
+    document.getElementById('pricetotal').innerHTML = total;
+    
+    if(cart['pr' + a][0] == 0){
+    delete cart['pr' + a];
+    $(this).parents('tr').remove()
+  }
+  $('#amount').val(total);
+    updateCart(cart);
+
+});
+$(document).on('click','button.plus', function(){
+  a = this.id.slice(6, );
+  cart['pr' + a][0] = cart['pr' + a][0] + 1;
+  cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+  total = total + cart['pr' + a][2]
+  $price = cart['pr' + a][0] * cart['pr' + a][2]
+
+  document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+  document.getElementById('pricepr' + a).innerHTML = $price;
+  document.getElementById('pricetotal').innerHTML = total;
+  $('#amount').val(total);
+    updateCart(cart);
+});
+}
+
+</script>
+{% endblock %}

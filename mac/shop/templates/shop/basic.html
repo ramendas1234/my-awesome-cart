@@ -1,0 +1,171 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'owl.carousel.min.css' %}" crossorigin="anonymous">
+
+    <title>{% block title%} {% endblock %}</title>
+     <style>
+       {% block css %} 
+
+       {% endblock %}
+	   .custom-logo{
+	   text-shadow: 3px 3px 5px #fdfbfb;
+    font-size: 30px;
+	}
+       .page-footer{
+            background-color: #343a40 !important;
+                color: #fff;
+       }
+       .page-footer p{
+        color: rgba(255,255,255,.5);
+       }
+       .page-footer a{
+        color: rgba(255,255,255,.5);
+       }
+       
+       .footer-copyright{
+            background: rgba(0,0,0,0.4);
+       }
+  </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand custom-logo" href="/shop">My Awesome Cart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/shop/about">About Us</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/shop/tracker">Tracker</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/blog">Blog</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/shop/contact">Contact Us</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0" method="get" action="/shop/search/" >
+      <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">Cart(<span id="cart">0</span>)</button>
+  </div>
+</nav>
+  {% block body %} {% endblock %}
+<!-- Footer -->
+<footer class="page-footer font-small mt-5  pt-4">
+
+  <!-- Footer Links -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase">About MyAwesomeCart</h5>
+        <p>MyAwesomeCart is world fampous online shopping. Best and 100% secure payment.
+         MyAwesomeCart is empowers small and medium-sized businesses to reach millions of customers with a number of programmes that help boost their revenue, reach and productivity. By telling stories from a wide range of perspectives, we tell the larger story of who Amazon is and how Amazon's core business practices contribute to a better India.
+         </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Connect with us</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!">Facebook</a>
+          </li>
+          <li>
+            <a href="#!">Twitter</a>
+          </li>
+          <li>
+            <a href="#!">Instagram</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Let us help you</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!">Track Order</a>
+          </li>
+          <li>
+            <a href="#!">Returns Center</a>
+          </li>
+          <li>
+            <a href="#!">Contact Us</a>
+          </li>
+          <li>
+            <a href="#!">Help</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/"> MyAwesomeCart.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- <script src="{% static 'shop.js' %}"></script> -->
+    <script src="{% static 'owl.carousel.min.js' %}"></script> 
+    {% block js %}
+      
+     {% endblock %}
+  </body>
+</html>
